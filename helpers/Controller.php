@@ -41,12 +41,12 @@ class Controller
 		}
 	}
 
-	private function _render($context)
+	private function renderLayout($context)
 	{
 		require(VIEWS_ROOT . '/' . $this->layout . '.php');
 	}
 
-	public function render($view, $params=array())
+	public function renderPartial($view, $params=array())
 	{
 		foreach($params as $varname => $value)
 		{
@@ -55,8 +55,12 @@ class Controller
 
 		ob_start();
 		require(VIEWS_ROOT . '/' . $view . '.php');
-		$context = ob_get_clean();
-		$this->_render($context);
+		return ob_get_clean();
+	}
+
+	public function render($view, $params=array())
+	{
+		$this->renderLayout( $this->renderPartial($view, $params) );
 	}
 
 	public function run()
