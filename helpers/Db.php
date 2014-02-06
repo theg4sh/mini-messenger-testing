@@ -54,6 +54,34 @@ class Db extends ConfigDB
 		return ($result !== false);
 	}
 
+	public function delete($tableName, $condition)
+	{
+		// TODO: fake delete with is_deleted
+		$result = pg_delete($this->pconnect, $tableName, $condition);
+		if ($result === false)
+		{
+			$this->errors[] = pg_last_error($this->pconnect);
+			return false;
+		}
+		return true;
+	}
+
+	public function insert($tableName, $params)
+	{
+		$result = pg_insert($this->pconnect, $tableName, $params);
+		if ($result === false)
+		{
+			$this->errors[] = pg_last_error($this->pconnect);
+			return false;
+		}
+		return true;
+	}
+
+	public function getLastInsertId()
+	{
+		return NULL;
+	}
+
 	public function query($sql, $params=array())
 	{
 		$result = pg_query_params($this->pconnect, $sql, $params);
@@ -77,6 +105,11 @@ class Db extends ConfigDB
 			return FALSE;
 		}
 
-		return pg_fetch_assoc($result);
+		return pg_fetch_all($result);
+	}
+
+	public function getLastError()
+	{
+		return pg_last_error($this->pconnect);
 	}
 };

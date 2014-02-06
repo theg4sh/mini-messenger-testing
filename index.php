@@ -10,6 +10,7 @@ include_once(APP_ROOT . '/controllers/user.php');
 include_once(APP_ROOT . '/controllers/wall.php');
 include_once(APP_ROOT . '/controllers/message.php');
 
+include_once(APP_ROOT . '/models/AbstractModel.php');
 include_once(APP_ROOT . '/models/Message.php');
 include_once(APP_ROOT . '/models/User.php');
 
@@ -76,7 +77,6 @@ class Run
 			self::$instance->db   = Db::getInstance();
 			self::$instance->user = new User();
 			self::$instance->user->sessionLogin();
-			var_dump(self::$instance->user);
 		}
 
 		return self::$instance;

@@ -11,7 +11,8 @@ class UserController extends Controller
 
 	public function actionList()
 	{
-		$this->render('users');
+		$users = User::model()->findAll();
+		$this->render('users', array('users'=>$users));
 	}
 
 	public function actionLogin()
@@ -24,10 +25,19 @@ class UserController extends Controller
 			$this->user->sessionLogout();
 			$user = new User();
 			$response['success'] = $user->login($_REQUEST['username'], $_REQUEST['password']);
+			if ($response['success'] == false)
+			{
+				$response['message'] = 'Неверный логин или пароль';
+			}
+		}
+		else
+		{
+			$response['message'] = 'Необходимо указать логин и пароль для авторизации';
 		}
 
 		//header("Content-Type: application/json");
-		echo json_encode($response);
+		//echo json_encode($response);
+		$this->ajaxRender($response);
 	}
 
 	public function actionLogout()
@@ -37,6 +47,6 @@ class UserController extends Controller
 			$this->user->logout();
 		}
 
-		echo json_encode(array('success' => true));
+		$this->ajaxRender(array('success' => true));
 	}
 }

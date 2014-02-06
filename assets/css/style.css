@@ -1,0 +1,222 @@
+html,
+body {
+	width: 100%;
+	min-height: 100%;
+	padding: 0;
+	margin: 0;
+	font-family: arial;
+}
+
+[class^=btn-] {
+	border: 1px solid #CCC;
+	background-color: #FFF;
+	color: #333;
+	border-radius: 3px;
+	line-height: 18px;
+	font-size: 14px;
+	cursor: pointer;
+}
+[class^=btn-].small {
+	font-size: 12px;
+	line-height: 14px;
+	padding: 2px;
+}
+[class^=btn-].text {
+	border: 0px;
+	background-color: #fff;
+}
+[class^=btn-]:hover,
+[class^=btn-]:focus {
+	border-color: #adadad;
+	background-color: #ededed;
+}
+
+textarea,
+input,
+fieldset {
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	padding: 2px;
+}
+label {
+	padding: 5px 0;
+}
+input {
+	padding: 3px 5px;
+	line-height: 12px;
+}
+fieldset { padding: 10px }
+
+textarea:focus,
+textarea:hover,
+input:focus,
+input:hover,
+fieldset:focus,
+fieldset:hover
+{
+	border-color: #adadad;
+}
+.btn-submit {
+	
+}
+.menu
+{
+	width: 100%;
+	height: 50px;
+	margin-bottom: 10px;
+	background: #EBEBEB;
+	line-height: 47px;
+}
+.menu-nav,
+.context {
+	width: 800px;
+	margin: 0 auto;
+}
+
+.menu-nav .brand {
+	float: left;
+	margin: auto 0;
+}
+.menu-nav .links {
+	float: left;
+	margin-left: 10px;
+	padding: 0 10px; 
+	border-left: 1px solid #adadad;
+}
+.menu-nav .username,
+.menu-nav .logout,
+.menu-nav .login
+{
+	display: table-cell;
+	padding-left: 10px;
+}
+
+.pull-right {
+	float: right;
+}
+
+.hidden { display: none; }
+
+.modal {
+	position: absolute;
+	width: 100%;
+	top: 60px;
+}
+.modal-context {
+	margin: auto;
+	width: 251px;
+	border: 1px solid #338;
+	padding: 0;
+	border-radius: 5px;
+	margin: auto;
+	background-color: #fff;
+}
+.modal-context.big {
+	width: 400px;
+}
+.modal-context.biggest {
+	width: 600px;
+}
+.modal-context .title {
+	font-weight: bold;
+	line-height: 18px;
+	padding: 10px;
+	background: #77B;
+	margin-bottom: 5px;
+}
+.modal-context .title .close {
+	color: #888;
+	background-color: #EEE;
+	border-radius: 50%;
+	font-size: 12px;
+	width: 18px;
+	height: 18px;
+	line-height: 18px;
+	text-align: center;
+	display: inline;
+	float: right;
+	cursor: pointer;
+}
+.modal-context .title .close:hover,
+.modal-context .title .close.hover
+{
+	color: #333;
+	background-color: #FFF;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	border: 1px solid #333;
+}
+.modal-context .body {
+	padding: 0 10px;
+}
+.modal-context .body fieldset label,
+.modal-context .body fieldset input
+{
+	display: table-cell;
+}
+
+.modal-context .buttons {
+	margin-top: 5px;
+	padding: 10px;
+	line-height: 25px;
+}
+.modal-context .buttons * {
+}
+
+/**
+ * CONTEXT
+ */
+.context .user {
+	margin-bottom: 20px;
+}
+.context .user .nickname {
+	font-size: 16px;
+	font-weight: bold;
+	display: block;
+}
+.context .user .last-visit {
+	font-size: 12px;
+	font-style: italic;
+	line-height: 18px;
+	display: block;
+	color: #AAA;
+}
+
+.context .send { margin-bottom: 20px; }
+.context .send fieldset { padding-right: 14px; }
+.context .send fieldset textarea { width: 100%; }
+
+.context .wall { border-top: 10px solid #ededed; padding-top: 10px; }
+.context .wall .wall-empty { color: #adadad; }
+
+.context .wall .inner .msg
+{
+	margin-bottom: 10px;
+	border-left: 5px solid #ededed;
+	padding: 4px 10px;
+	border: 1px solid #aaa;
+	border-radius: 3px;
+}
+.context .wall .inner .msg.removing { overflow: hidden; }
+.context .wall .inner .msg .info
+{
+	margin-bottom: 5px;
+	background-color: #
+}
+.context .wall .inner .msg .info .remove { float: right; font-size: 12px; }
+.context .wall .inner .msg .info .remove a
+{
+	text-decoration: none;
+}
+.context .wall .inner .msg .time,
+.context .wall .inner .msg .sender
+{
+	font-size: 12px;
+	color: #ababab;
+	display: inline-block;
+}
+.context .wall .inner .msg .message
+{
+	display: block;
+}

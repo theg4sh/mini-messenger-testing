@@ -1,8 +1,7 @@
 <?php
 
-class User
+class User extends AbstractModel
 {
-	private $_isNewRecord;
 	public $id;
 	public $username;
 	public $password;
@@ -10,16 +9,6 @@ class User
 	public $created_at;
 	public $updated_at;
 	public $last_visit;
-
-	public function __construct()
-	{
-		$this->_isNewRecord = true;
-	}
-
-	public function getIsNewRecord()
-	{
-		return $this->_isNewRecord;
-	}
 
 	public function isGuest()
 	{
@@ -48,11 +37,9 @@ class User
 			. "WHERE username=$1 AND password=$2";
 		$result = Db::getInstance()->query($sql, array($username, $password));
 
-		var_dump(strtr($sql, array('$1' => "'".$username."'", '$2'=>"'".$password."'")));
-
 		if ($result !== false)
 		{
-			$this->_isNewRecord = false;
+			$this->_setIsRecord(true);
 			$this->id         = $result['id'];
 			$this->username   = $result['username'];
 			$this->password   = false;
@@ -87,7 +74,7 @@ class User
 					$this->$key = $value;
 				}
 			}
-			$this->_isNewRecord = false;
+			$this->_setIsRecord(true);
 
 			return $this->updateLastVisit();
 		}
@@ -97,7 +84,7 @@ class User
 
 	public function logout()
 	{
-		$this->_isNewRecord = true;
+		$this->_setIsRecord(false);
 		$this->id         = NULL;
 		$this->username   = NULL;
 		$this->password   = NULL;
@@ -109,11 +96,92 @@ class User
 		$this->sessionLogout();
 	}
 
+	public function getLastInsertId()
+	{
+		$result = pg_query("SELECT currval('tbl_users_id_seq')");
+		if ($result !== false)
+		{
+			$row = pg_fetch_assoc($result);
+			return array_shift($row);
+		}
+
+		return NULL;
+	}
+
+	public function findByPk($id)
+	{
+		$sql = "SELECT "
+			. "id, username, nickname, "
+			. "extract(epoch from created_at) as created_at, "
+			. "extract(epoch from updated_at) as updated_at, "
+			. "extract(epoch from last_visit) as last_visit "
+			. "FROM tbl_users "
+			. "WHERE id = $1";
+
+		$result = Db::getInstance()->query($sql, array($id));
+		if ($result !== FALSE)
+		{
+			$this->_setIsRecord(true);
+			$this->id         = $result['id'];
+			$this->username   = $result['username'];
+			$this->password   = false;
+			$this->nickname   = $result['nickname'];
+			$this->created_at = $result['created_at'];
+			$this->updated_at = $result['updated_at'];
+			$this->last_visit = $result['last_visit'];
+
+			return $this;
+		}
+
+		return NULL;
+	}
+
+	public function findAll()
+	{
+		$sql = "SELECT "
+			. "id, username, nickname, "
+			. "extract(epoch from created_at) as created_at, "
+			. "extract(epoch from updated_at) as updated_at, "
+			. "extract(epoch from last_visit) as last_visit "
+			. "FROM tbl_users ";
+
+		$users = Db::getInstance()->queryAll($sql);
+		if ($users !== false)
+		{
+			foreach($users as $k => $u)
+			{
+				$this->id         = $u['id'];
+				$this->username   = $u['username'];
+				$this->password   = false;
+				$this->nickname   = $u['nickname'];
+				$this->created_at = $u['created_at'];
+				$this->updated_at = $u['updated_at'];
+
+				$this->_setIsRecord(true);
+
+				$users[$k] = clone $this;
+			}
+			$this->_setIsRecord(false);
+		}
+
+		return $users;
+	}
+
 	public function sessionLogout()
 	{
 		session_destroy();
 		session_start();
 	}
 
-
+	public function getWallMessages()
+	{
+		if ($this->getIsNewRecord())
+		{
+			return array();
+		}
+		else
+		{
+			return Message::model()->getUserWall($this->id);
+		}
+	}
 }

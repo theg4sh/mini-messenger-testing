@@ -10,10 +10,11 @@ class Controller
 	public $db;
 	public $user;
 
-	public function __construct($className=__CLASS__, $path=array())
+	protected function __construct($className=__CLASS__, $path=array())
 	{
 		$actions = array();
-		foreach(get_class_methods($className) as $m)
+		$methods = get_class_methods($className);
+		foreach($methods as $m)
 		{
 			if (strpos(substr($m, 0, 6), 'action') === 0)
 			{
@@ -73,5 +74,18 @@ class Controller
 		}
 
 		return false;
+	}
+
+	public function ajaxRender($params)
+	{
+		$action = (!empty($_GET['callback'])) ? $_GET['callback'] : false;
+		if ($action == false)
+		{
+			echo json_encode($params);
+		}
+		else
+		{
+			echo $action . '(' . json_encode($params) . ')';
+		}
 	}
 }
