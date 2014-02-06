@@ -48,6 +48,12 @@ class Db extends ConfigDB
 		return $this->errors;
 	}
 
+	public function update($tableName, $updateFields, $condition)
+	{
+		$result = pg_update($this->pconnect, $tableName, $updateFields, $condition);
+		return ($result !== false);
+	}
+
 	public function query($sql, $params=array())
 	{
 		$result = pg_query_params($this->pconnect, $sql, $params);

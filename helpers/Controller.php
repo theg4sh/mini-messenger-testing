@@ -8,6 +8,7 @@ class Controller
 	public $layout = 'layout';
 
 	public $db;
+	public $user;
 
 	public function __construct($className=__CLASS__, $path=array())
 	{
@@ -36,7 +37,7 @@ class Controller
 			}
 			else
 			{
-				throw new Exception('Wrong query ' . implode('/', $path));
+				throw new Exception('Class ' . get_called_class() . ' has no action ' . implode('/', $path));
 			}
 		}
 	}

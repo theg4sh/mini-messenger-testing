@@ -18,12 +18,15 @@ class Run
 	static private $instance;
 
 	private $db;
+	private $user;
 
 	public $defaultController = 'user';
 	public $controller;
 
 	private function __construct()
 	{
+		session_start();
+
 		$controllersList = array_filter(get_declared_classes(), function ($var) {
 			return (preg_match('/^[[:alpha:]_]+Controller$/', $var) > 0);
 		});
@@ -31,8 +34,11 @@ class Run
 		if (isset($_GET['q']))
 		{
 			$path = preg_replace('/[^[:alpha:]_\/]+/ui', '', $_GET['q']);
-			$path = explode('/', $_GET['q']);
-			$test = unshift($path);
+			$path = explode('/', $path);
+			if (is_array($path) && (count($path) > 0))
+			{
+				$test = array_shift($path);
+			}
 		}
 		else
 		{
@@ -45,6 +51,7 @@ class Run
 			if (strcmp( strtolower($c), strtolower($test . 'Controller') ) === 0)
 			{
 				$controller = $c;
+				break;
 			}
 		}
 
@@ -66,7 +73,10 @@ class Run
 		if (!self::$instance)
 		{
 			self::$instance = new Run();
-			self::$instance->db = Db::getInstance();
+			self::$instance->db   = Db::getInstance();
+			self::$instance->user = new User();
+			self::$instance->user->sessionLogin();
+			var_dump(self::$instance->user);
 		}
 
 		return self::$instance;
@@ -74,10 +84,17 @@ class Run
 
 	public function getDb()
 	{
+		if (self::$instance)
+		{
+			return self::$instance->db;
+		}
+
+		return NULL;
 	}
 
 	public function process()
 	{
+		$this->controller->user = &$this->user;
 		$this->controller->run();
 	}
 }
