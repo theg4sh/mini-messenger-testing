@@ -56,6 +56,7 @@ Modal.open = function (id) {
 	this.current = id;
 	$(id).css({ opacity: 0 }).removeClass('hidden')
 		.animate({ opacity: 1 }, this.timeout);
+	$(id).find('input[type=text]:first').focus();
 };
 Modal.close = function () {
 	if (this.current)
